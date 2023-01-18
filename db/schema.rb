@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_18_061450) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_18_065243) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -42,6 +42,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_18_061450) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "transactions", force: :cascade do |t|
+    t.string "transaction_type"
+    t.string "details"
+    t.decimal "amount"
+    t.decimal "balance"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "account_id"
+    t.index ["account_id"], name: "index_transactions_on_account_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -66,5 +77,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_18_061450) do
 
   add_foreign_key "accounts", "branches"
   add_foreign_key "accounts", "users"
+  add_foreign_key "transactions", "accounts"
   add_foreign_key "users", "roles"
 end
