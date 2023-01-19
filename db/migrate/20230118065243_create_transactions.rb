@@ -5,10 +5,9 @@ class CreateTransactions < ActiveRecord::Migration[7.0]
       t.string :details
       t.decimal :amount
       t.decimal :balance
+      t.references :account, foreign_key: true
 
       t.timestamps
     end
-
-    add_reference :transactions, :account, foreign_key: true
   end
 end

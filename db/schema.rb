@@ -10,18 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_18_065243) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_18_121800) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "accounts", force: :cascade do |t|
     t.integer "account_no"
     t.string "account_type"
-    t.decimal "total_balance"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.float "total_balance"
     t.bigint "user_id"
     t.bigint "branch_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["branch_id"], name: "index_accounts_on_branch_id"
     t.index ["user_id"], name: "index_accounts_on_user_id"
   end
@@ -45,11 +45,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_18_065243) do
   create_table "transactions", force: :cascade do |t|
     t.string "transaction_type"
     t.string "details"
-    t.decimal "amount"
-    t.decimal "balance"
+    t.float "amount"
+    t.float "balance"
+    t.bigint "account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "account_id"
     t.index ["account_id"], name: "index_transactions_on_account_id"
   end
 
