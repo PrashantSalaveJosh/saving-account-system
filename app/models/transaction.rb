@@ -3,4 +3,5 @@ class Transaction < ApplicationRecord
 
   validates :transaction_type, :details, :amount, :balance, presence: true
   validates :amount, numericality: { greater_than: 0 }
+
 end

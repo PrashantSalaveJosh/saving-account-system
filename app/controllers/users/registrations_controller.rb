@@ -3,6 +3,8 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   respond_to :json
 
+  before_action :configure_permitted_parameters
+
   private
 
   def respond_with(resource, options = {})
@@ -10,7 +12,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       render json: {
         code: 200,
         message: "Signed up successfully",
-        data: resource,
+        data: resource
       }, status: :ok
     else
       render json: {
@@ -18,5 +20,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
         errors: resource.errors.full_messages,
       }, status: :unprocessable_entity
     end
+  end
+
+
+  protected
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:role_id])
   end
 end
