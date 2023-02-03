@@ -2,9 +2,10 @@ class TransactionsController < ApplicationController
   before_action :authenticate_user!
   load_and_authorize_resource
   before_action :set_transaction, only: %i[show]
+  before_action :set_balance, only: [:create]
 
   def index
-    render json: Transaction.where(account_id: current_user.account), status: :ok
+    render json: Transaction.where(account_id: User.find(params[:user_id]).account), status: :ok
   end
 
   def show 
@@ -17,21 +18,12 @@ class TransactionsController < ApplicationController
   end
 
   def create
-    @transaction = Transaction.new(transaction_params)
-    if @transaction.transaction_type.eql?("credit")
-      @transaction.balance = current_user.account.total_balance + @transaction.amount
+    if @transaction.save
+      Account.find(@transaction.account_id).update(total_balance: @transaction.balance)
+      render json: @transaction, status: :created
     else
-      @transaction.balance = current_user.account.total_balance - @transaction.amount
-    end
-
-    begin
-      @transaction.save
-    rescue
       render json: { errors: @transaction.errors.full_messages },
       status: :unprocessable_entity
-    else
-      current_user.account.total_balance = @transaction.balance
-      render json: "transaction successfull", status: :created
     end
   end
 
@@ -44,5 +36,15 @@ class TransactionsController < ApplicationController
   def set_transaction
     @transaction = Transaction.find(params[:id])
   end
-end
+
+  def set_balance
+    @transaction = Transaction.new(transaction_params)
+    if @transaction.transaction_type.eql?("credit")
+      @transaction.balance = current_user.account.total_balance + @transaction.amount
+    else
+      @transaction.balance = current_user.account.total_balance - @transaction.amount
+    end
+    return @transaction
+  end
+
 end

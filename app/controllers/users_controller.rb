@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
   load_and_authorize_resource
-  before_action :set_user, only: %i[show destroy update]
+  before_action :set_user, only: %i[show update]
 
   def index
     render json: User.where(role_id: Role.find_by(key:'customer')), status: :ok
@@ -28,7 +28,7 @@ class UsersController < ApplicationController
 
   def update
     if @user.update(user_params)
-      render json: "user updated", status: :ok
+      render json: @user, status: :ok
     else
       render json: { errors: @user.errors.full_messages },
              status: :unprocessable_entity
@@ -38,7 +38,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :contact_no, :address, :dob, :gender, :role_id)
+    params.require(:user).permit(:first_name, :last_name, :contact_no, :address, :dob, :gender)
   end
 
   def customer_user_params

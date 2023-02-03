@@ -6,8 +6,31 @@ class Ability
   def initialize(user)
     if user.role.key.eql?("admin")
       can :manage, :all
-    
     end
+
+    if user.role.key.eql?("customer")
+      can :show, User, id: user.id
+      can :update, User, id: user.id
+      can :show, Account, user_id: user.id
+      can :update, Account, user_id: user.id
+      can :index, Transaction, user_id: user.id
+      can :show, Transaction
+      can :create, Transaction
+    end
+
+
+
+    # if user.user_detail.role.name.eql?('admin')
+    #   can :manage, :all 
+    # elsif user.user_detail.role.name.eql?('staff')
+    #   can :manage, UserDetail, Medicine, Treatment, Address
+    # end
+
+    # can :show, User, id: user.id
+    #   can :update, User, id: user.id
+    #   can :index, Asset
+    #   can :create, Request
+
 
     # Define abilities for the user here. For example:
     #

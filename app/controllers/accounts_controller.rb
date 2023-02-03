@@ -16,6 +16,11 @@ class AccountsController < ApplicationController
     end
   end
 
+  # def show
+  #   result = Account::Show.new(params).call
+  #   render json: 
+  # end
+
   def create
     @account = Account.new(account_params)
 
