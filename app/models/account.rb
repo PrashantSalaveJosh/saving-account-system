@@ -11,7 +11,7 @@ class Account < ApplicationRecord
 
   def set_account_no
     if Account.count.eql?(0)
-      self.account_no = 1313100001
+      self.account_no = 131310001
     else
       max_account_no = Account.maximum(:account_no)
       self.account_no = max_account_no + 1
