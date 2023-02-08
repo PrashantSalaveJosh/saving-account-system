@@ -15,6 +15,12 @@ RSpec.describe AccountsController, type: :controller do
     it 'should return all users account details' do
       get :index
       expect(response.status).to eq(200)
+      res = (JSON.parse(response.body)[0])
+      expect(res['account_no']).to be_present
+      expect(res['account_type']).to be_present
+      expect(res['total_balance']).to be_present
+      expect(res['user_id']).to be_present
+      expect(res['branch_id']).to be_present
     end
   end
 
@@ -59,6 +65,7 @@ RSpec.describe AccountsController, type: :controller do
         }
       }
       expect(response.status).to eq(201)
+      expect((JSON.parse(response.body))['message']).to eq(I18n.t('account.create.success'))
     end
 
     it "should not create new account with nil field" do
@@ -71,6 +78,7 @@ RSpec.describe AccountsController, type: :controller do
         }
       }
       expect(response.status).to eq(422)
+      expect((JSON.parse(response.body))['message']).to eq(I18n.t('account.create.failure'))
     end
   end
 
@@ -95,6 +103,7 @@ RSpec.describe AccountsController, type: :controller do
         }, id: account.id
       }
       expect(response.status).to eq(200)
+      expect((JSON.parse(response.body))['message']).to eq(I18n.t('account.update.success'))
     end
 
     it 'should not update the account with nil field' do
@@ -108,6 +117,7 @@ RSpec.describe AccountsController, type: :controller do
         }, id: account.id
       }
       expect(response.status).to eq(422)
+      expect((JSON.parse(response.body))['message']).to eq(I18n.t('account.update.failure'))
     end
 
     it 'should not update the account with different id' do

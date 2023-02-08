@@ -1,11 +1,11 @@
 require 'swagger_helper'
 
-RSpec.describe 'users', type: :request do
+RSpec.describe 'accounts', type: :request do
 
-  path '/users' do
+  path '/accounts' do
 
-    get('list users') do
-      tags 'users'
+    get('list accounts') do
+      tags 'accounts'
       response(200, 'successful') do
 
         after do |example|
@@ -19,22 +19,24 @@ RSpec.describe 'users', type: :request do
       end
     end
 
-    post('create user') do
-      tags 'users'
+    post('create account') do
+      tags 'accounts'
       consumes 'application/json'
       produces 'application/json'
-      parameter name: :user, in: :body, schema: {
+      parameter name: :account, in: :body, schema: {
         type: :object,
         properties: {
-          user: {
+          account: {
             type: :object,
             properties: {
-              email: { type: :string },
-              password: { type: :string }
+              account_type: { type: :string },
+              total_balance: { type: :float },
+              user_id: { type: :integer },
+              branch_id: { type: :integer }
             }
           }
-        },
-        required: %w[user email password]
+        }
+        # required: %w[user email password]
       }
       response(200, 'successful') do
 
@@ -50,13 +52,12 @@ RSpec.describe 'users', type: :request do
     end
   end
 
-  path '/users/{id}' do
-
+  path '/accounts/{id}' do
     # You'll want to customize the parameter types...
     parameter name: 'id', in: :path, type: :string, description: 'id'
 
-    get('show user') do
-      tags 'users'
+    get('show account') do
+      tags 'accounts'
       response(200, 'successful') do
         let(:id) { '123' }
 
@@ -71,26 +72,39 @@ RSpec.describe 'users', type: :request do
       end
     end
 
-    put('update user') do
-      tags 'users'
+    # patch('update account') do
+    #   response(200, 'successful') do
+    #     let(:id) { '123' }
+
+    #     after do |example|
+    #       example.metadata[:response][:content] = {
+    #         'application/json' => {
+    #           example: JSON.parse(response.body, symbolize_names: true)
+    #         }
+    #       }
+    #     end
+    #     run_test!
+    #   end
+    # end
+
+    put('update account') do
+      tags 'accounts'
       consumes 'application/json'
       produces 'application/json'
-      parameter name: :user, in: :body, schema: {
+      parameter name: :account, in: :body, schema: {
         type: :object,
         properties: {
-          user: {
+          account: {
             type: :object,
             properties: {
-              first_name: { type: :string },
-              last_name: { type: :string },
-              contact_no: { type: :string },
-              address: { type: :string },
-              dob: { type: :datetime },
-              gender: { type: :string }
+              account_type: { type: :string },
+              total_balance: { type: :float },
+              user_id: { type: :integer },
+              branch_id: { type: :integer }
             }
           }
-        },
-        required: %w[user email password]
+        }
+        # required: %w[user email password]
       }
       response(200, 'successful') do
         let(:id) { '123' }
@@ -106,19 +120,19 @@ RSpec.describe 'users', type: :request do
       end
     end
 
-    delete('delete user') do
-      response(200, 'successful') do
-        let(:id) { '123' }
+    # delete('delete account') do
+    #   response(200, 'successful') do
+    #     let(:id) { '123' }
 
-        after do |example|
-          example.metadata[:response][:content] = {
-            'application/json' => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
-        run_test!
-      end
-    end
+    #     after do |example|
+    #       example.metadata[:response][:content] = {
+    #         'application/json' => {
+    #           example: JSON.parse(response.body, symbolize_names: true)
+    #         }
+    #       }
+    #     end
+    #     run_test!
+    #   end
+    # end
   end
 end

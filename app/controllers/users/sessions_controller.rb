@@ -8,7 +8,7 @@ class Users::SessionsController < Devise::SessionsController
   def respond_with(resourse, options = {})
     render json: {
       code: 200,
-      message: "User Signed in successfully",
+      message: I18n.t('user.login.success'),
       data: current_user
     }, status: :ok
   end
@@ -20,12 +20,12 @@ class Users::SessionsController < Devise::SessionsController
     if current_user
       render json: {
         status: 200,
-        message: "Signed out successfully",
+        message: I18n.t('user.logout.success'),
       }, status: :ok
     else
       render json: {
         status: 401,
-        message: "User has no active session",
+        message: I18n.t('user.logout.failure'),
       }, status: :unauthorized
     end
   end

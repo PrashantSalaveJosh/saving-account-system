@@ -3,6 +3,8 @@ class BranchesController < ApplicationController
   load_and_authorize_resource
 
   def index
-    render json: Branch.all, status: :ok
+    render json: Branch.all, 
+           status: :ok,
+           except: %i[created_at updated_at ]
   end
 end

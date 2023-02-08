@@ -1,36 +1,59 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
   load_and_authorize_resource
-  before_action :set_user, only: %i[show update]
+  before_action :set_user, only: %i[show update destroy]
+  before_action :set_role_id, only: [:create]
 
   def index
-    render json: User.where(role_id: Role.find_by(key:'customer')), status: :ok
+    @user = User.where(role_id: Role.find_by(key:'customer'))
+    render json: @user,
+           status: :ok,
+           except: %i[created_at updated_at jti ]
   end
 
   def show 
     if @user
-      render json: @user, status: :ok
+      render json: @user,
+             status: :ok,
+             except: %i[created_at updated_at jti ]
     else
-      render json: { errors: @user.errors.full_messages },
+      render json: { message: I18n.t('user.show.failure'),
+             errors: @user.errors.full_messages },
              status: :unprocessable_entity
     end
   end
 
   def create
-    @user = User.new(customer_user_params)
     if @user.save
-      render json: @user, status: :created
+      render json: { message: I18n.t('user.create.success'), data: @user},
+             status: :created,
+             except: %i[created_at updated_at jti ]
     else
-      render json: { errors: @user.errors.full_messages },
+      render json: { message: I18n.t('user.create.failure'),
+             errors: @user.errors.full_messages },
              status: :unprocessable_entity
     end
   end
 
   def update
     if @user.update(user_params)
-      render json: @user, status: :ok
+      render json: { message: I18n.t('user.update.success'), data: @user},
+             status: :ok,
+             except: %i[created_at updated_at jti ]
     else
-      render json: { errors: @user.errors.full_messages },
+      render json: { message: I18n.t('user.update.failure'),
+             errors: @user.errors.full_messages },
+             status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    if @user.update(status: 'inactive')
+      render json: { message: I18n.t('user.destroy.success') },
+             status: :ok
+    else
+      render json: { message: I18n.t('user.destroy.failure'),
+             errors: @user.errors.full_messages },
              status: :unprocessable_entity
     end
   end
@@ -47,5 +70,13 @@ class UsersController < ApplicationController
 
   def set_user
     @user = User.find(params[:id])
+  end
+
+  def set_role_id
+    @user = User.new(customer_user_params)
+    if @user.role_id == nil
+      @user.role_id = Role.find_by(key: 'customer').id
+    end
+    @user
   end
 end

@@ -19,4 +19,12 @@ class User < ApplicationRecord
     super
   end
 
+  def active_for_authentication?
+    super && self.status.eql?('active')
+  end
+
+  def inactive_message
+    "This account is deactivated."
+  end
+
 end

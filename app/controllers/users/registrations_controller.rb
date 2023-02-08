@@ -11,12 +11,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if resource.persisted?
       render json: {
         code: 200,
-        message: "Signed up successfully",
+        message: I18n.t('user.create.success'),
         data: resource
       }, status: :ok
     else
       render json: {
-        message: "User could not be created successfully",
+        message: I18n.t('user.create.failure'),
         errors: resource.errors.full_messages,
       }, status: :unprocessable_entity
     end

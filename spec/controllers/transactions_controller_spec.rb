@@ -16,6 +16,12 @@ RSpec.describe TransactionsController, type: :controller do
     it 'should return all transactions of user' do
       get :index, params: { user_id: valid_user.id }
       expect(response.status).to eq(200)
+      res = (JSON.parse(response.body)[0])
+      expect(res['transaction_type']).to be_present
+      expect(res['details']).to be_present
+      expect(res['amount']).to be_present
+      expect(res['balance']).to be_present
+      expect(res['account_id']).to be_present
     end
   end
 
@@ -60,6 +66,7 @@ RSpec.describe TransactionsController, type: :controller do
         }
       }
       expect(response.status).to eq(201)
+      expect((JSON.parse(response.body))['message']).to eq(I18n.t('transaction.create.success'))
     end
 
     it "should not create new transaction with nil field" do
@@ -71,6 +78,7 @@ RSpec.describe TransactionsController, type: :controller do
         }
       }
       expect(response.status).to eq(422)
+      expect((JSON.parse(response.body))['message']).to eq(I18n.t('transaction.create.failure'))
     end
   end
 end

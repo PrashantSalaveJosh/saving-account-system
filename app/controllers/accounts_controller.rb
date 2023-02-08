@@ -4,14 +4,19 @@ class AccountsController < ApplicationController
   before_action :set_account, only: %i[show update]
 
   def index
-    render json: Account.all, status: :ok
+    render json: Account.all,
+           status: :ok,
+           except: %i[created_at updated_at ]
   end
 
   def show 
     if @account
-      render json: @account, status: :ok
+      render json: @account,
+             status: :ok,
+             except: %i[created_at updated_at ]
     else
-      render json: { errors: @account.errors.full_messages },
+      render json: { message: I18n.t('account.show.failure'),
+             errors: @account.errors.full_messages },
              status: :unprocessable_entity
     end
   end
@@ -20,18 +25,22 @@ class AccountsController < ApplicationController
     @account = Account.new(account_params)
 
     if @account.save
-      render json: "account created", status: :created
+      render json: { message: I18n.t('account.create.success') },
+             status: :created
     else
-      render json: { errors: @account.errors.full_messages },
-      status: :unprocessable_entity
+      render json: { message: I18n.t('account.create.failure'),
+             errors: @account.errors.full_messages },
+             status: :unprocessable_entity
     end
   end
 
   def update
     if @account.update(account_params)
-      render json: "account updated", status: :ok
+      render json: { message: I18n.t('account.update.success') }, 
+             status: :ok
     else
-      render json: { errors: @account.errors.full_messages },
+      render json: { message: I18n.t('account.update.failure'),
+             errors: @account.errors.full_messages },
              status: :unprocessable_entity
     end
   end

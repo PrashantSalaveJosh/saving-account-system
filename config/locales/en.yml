@@ -1,33 +1,54 @@
-# Files in the config/locales directory are used for internationalization
-# and are automatically loaded by Rails. If you want to use locales other
-# than English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# The following keys must be escaped otherwise they will not be retrieved by
-# the default I18n backend:
-#
-# true, false, on, off, yes, no
-#
-# Instead, surround them with single quotes.
-#
-# en:
-#   "true": "foo"
-#
-# To learn more, please read the Rails Internationalization guide
-# available at https://guides.rubyonrails.org/i18n.html.
-
 en:
   hello: "Hello world"
+
+  record_not_found: "record_not_found"
+
+  user:
+    create:
+      success: "User created sucessfully"
+      failure: "User creation failed"
+    login:
+      success: "Signed in successfully"
+      failure: "Failed to sign in"
+    logout:
+      success: "Signed out successfully"
+      failure: "User not have active session"
+    update:
+      success: "User updated sucessfully"
+      failure: "User update failed"
+    destroy:
+      success: "User deleted sucessfully"
+      failure: "User cannot be deleted"
+      noactiveuser: "User not active"
+    show:
+      failure: "User not found"
+
+  Account:
+    create:
+      success: "Account created sucessfully"
+      failure: "Account create failed"
+    update:
+      success: "Account updated sucessfully"
+      failure: "Account update failed"
+      not_found: "Account not found"
+    destroy:
+      success: "Account deleted sucessfully"
+      failure: "Account delete failed"
+      not_found: "Account not found"
+    show:
+      failure: "Account not found"
+
+  Transaction:
+    create:
+      success: "Transaction created sucessfully"
+      failure: "Transaction create failed"
+    update:
+      success: "Transaction updated sucessfully"
+      failure: "Transaction update failed"
+      not_found: "Transaction not found"
+    destroy:
+      success: "Transaction deleted sucessfully"
+      failure: "Transaction delete failed"
+      not_found: "Transaction not found"
+    show:
+      failure: "Transaction not found"

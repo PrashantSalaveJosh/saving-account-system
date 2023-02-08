@@ -5,14 +5,19 @@ class TransactionsController < ApplicationController
   before_action :set_balance, only: [:create]
 
   def index
-    render json: Transaction.where(account_id: User.find(params[:user_id]).account), status: :ok
+    render json: Transaction.where(account_id: User.find(params[:user_id]).account),
+           status: :ok,
+           except: %i[ updated_at ]
   end
 
   def show 
     if @transaction
-      render json: @transaction, status: :ok
+      render json: @transaction, 
+             status: :ok,
+             except: %i[ updated_at ]
     else
-      render json: { errors: @transaction.errors.full_messages },
+      render json: { message: I18n.t('transaction.show.failure'),
+             errors: @transaction.errors.full_messages },
              status: :unprocessable_entity
     end
   end
@@ -20,10 +25,12 @@ class TransactionsController < ApplicationController
   def create
     if @transaction.save
       Account.find(@transaction.account_id).update(total_balance: @transaction.balance)
-      render json: @transaction, status: :created
+      render json: { message: I18n.t('transaction.create.success'), data: @transaction }, 
+             status: :created
     else
-      render json: { errors: @transaction.errors.full_messages },
-      status: :unprocessable_entity
+      render json: { message: I18n.t('transaction.create.failure'),
+             errors: @transaction.errors.full_messages },
+             status: :unprocessable_entity
     end
   end
 
