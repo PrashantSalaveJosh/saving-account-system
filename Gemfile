@@ -60,3 +60,4 @@ gem "devise-jwt"
 gem "fast_jsonapi"
 gem "byebug"
 gem "cancancan"
+gem 'rswag'

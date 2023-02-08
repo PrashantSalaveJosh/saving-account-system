@@ -15,18 +15,14 @@ RSpec.describe Account, type: :model do
 
     it 'should not be valid without total balance' do
       account.total_balance = nil
-      debugger
       expect(account.valid?).to eq(false)
     end
 
-    # it 'should not save user with email field missing' do
-    #   user.email = nil
-    #   expect(user.valid?).to eq(false)
-    # end
-
-    # it 'should not valid without password' do
-    #   user.password = nil
-    #   expect(user.valid?).to eq(false)
-    # end
+    it 'should not be valid with invalid total balance' do
+      account.total_balance = -100
+      debugger
+      expect(account.valid?).to eq(false)
+    end
+    
   end
 end

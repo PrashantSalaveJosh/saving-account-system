@@ -1,7 +1,7 @@
 class AccountsController < ApplicationController
   before_action :authenticate_user!
   load_and_authorize_resource
-  before_action :set_account, only: %i[show destroy update]
+  before_action :set_account, only: %i[show update]
 
   def index
     render json: Account.all, status: :ok
@@ -15,11 +15,6 @@ class AccountsController < ApplicationController
              status: :unprocessable_entity
     end
   end
-
-  # def show
-  #   result = Account::Show.new(params).call
-  #   render json: 
-  # end
 
   def create
     @account = Account.new(account_params)
@@ -49,5 +44,6 @@ class AccountsController < ApplicationController
 
   def set_account
     @account = Account.find(params[:id])
+    # @account = User.find(params[:id]).account
   end
 end

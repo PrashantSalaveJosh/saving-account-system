@@ -18,4 +18,5 @@ class User < ApplicationRecord
   def jwt_payload
     super
   end
+
 end
