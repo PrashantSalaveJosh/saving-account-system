@@ -8,6 +8,7 @@ class Account < ApplicationRecord
   validates :account_type, :total_balance, presence: true
   validates :total_balance, numericality: { greater_than: 0 }
   validates :account_no, uniqueness: true
+  validates :user_id, uniqueness: true
 
   def set_account_no
     if Account.count.eql?(0)

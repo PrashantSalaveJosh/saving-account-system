@@ -1,7 +1,7 @@
 class AccountsController < ApplicationController
   before_action :authenticate_user!
   load_and_authorize_resource
-  before_action :set_account, only: %i[show update]
+  before_action :set_account, only: %i[ show update ]
 
   def index
     render json: Account.all,
@@ -53,6 +53,5 @@ class AccountsController < ApplicationController
 
   def set_account
     @account = Account.find(params[:id])
-    # @account = User.find(params[:id]).account
   end
 end

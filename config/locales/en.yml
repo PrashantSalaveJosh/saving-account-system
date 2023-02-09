@@ -23,7 +23,7 @@ en:
     show:
       failure: "User not found"
 
-  Account:
+  account:
     create:
       success: "Account created sucessfully"
       failure: "Account create failed"
@@ -38,7 +38,7 @@ en:
     show:
       failure: "Account not found"
 
-  Transaction:
+  transaction:
     create:
       success: "Transaction created sucessfully"
       failure: "Transaction create failed"

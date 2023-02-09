@@ -17,7 +17,6 @@ RSpec.describe Users::SessionsController, type: :controller do
           password: user.password
         }
       }
-      debugger
       expect(response.status).to eq(200)
       expect((JSON.parse(response.body))['message']).to eq(I18n.t('user.login.success'))
     end
@@ -29,7 +28,6 @@ RSpec.describe Users::SessionsController, type: :controller do
           password: '123'
         }
       }
-      debugger
       expect(response.status).to eq(401)
     end
   end
