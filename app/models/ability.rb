@@ -11,7 +11,7 @@ class Ability
     if user.role.key.eql?("customer")
       can :show, User, id: user.id
       can :update, User, id: user.id
-      can :show, Account, user_id: user.id
+      can :index, Account, user_id: user.id
       can :update, Account, user_id: user.id
       can :index, Transaction, user_id: user.id
       can :show, Transaction

@@ -25,6 +25,7 @@ class UsersController < ApplicationController
 
   def create
     if @user.save
+      WelcomeMailer.with(user: @user).welcome_mail(@pass).deliver_later
       render json: { message: I18n.t('user.create.success'), data: @user},
              status: :created,
              except: %i[created_at updated_at jti ]
@@ -65,7 +66,7 @@ class UsersController < ApplicationController
   end
 
   def customer_user_params
-    params.require(:user).permit(:email, :password)
+    params.require(:user).permit(:email)
   end
 
   def set_user
@@ -74,6 +75,8 @@ class UsersController < ApplicationController
 
   def set_role_id
     @user = User.new(customer_user_params)
+    @pass = SecureRandom.hex(6)
+    @user.password = @pass
     if @user.role_id == nil
       @user.role_id = Role.find_by(key: 'customer').id
     end

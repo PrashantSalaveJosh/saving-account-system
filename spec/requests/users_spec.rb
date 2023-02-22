@@ -107,6 +107,7 @@ RSpec.describe 'users', type: :request do
     end
 
     delete('delete user') do
+      tags 'users'
       response(200, 'successful') do
         let(:id) { '123' }
 
